@@ -16,7 +16,7 @@ class HomeScreen extends GetView<JokeController> {
         child: LiquidPullToRefresh(
           animSpeedFactor: 2,
           height: 100,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.white,
           springAnimationDurationInMilliseconds: 800,
           color: Colors.yellow,
           onRefresh: () async {
@@ -26,62 +26,62 @@ class HomeScreen extends GetView<JokeController> {
           child: ListView(
             children: [
               Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.all(20),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () => jokeController.joke.value.joke != null
-                                ? Text(
-                                    jokeController.joke.value.joke ?? '',
-                                    style: const TextStyle(
-                                        fontSize: 25,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                : Text(
-                                    jokeController.joke.value.setup ?? '',
-                                    style: const TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                          ),
-                          const SizedBox(height: 10),
-                          Obx(
-                            () => Text(
-                              jokeController.joke.value.delivery ?? '',
-                              style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              const Text('Category: ',
-                                  style: TextStyle(color: Colors.grey)),
-                              Obx(
-                                () => Text(
-                                  jokeController.joke.value.category!,
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => jokeController.joke.value.joke != null
+                              ? Text(
+                                  jokeController.joke.value.joke ?? '',
                                   style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 25,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : Text(
+                                  jokeController.joke.value.setup ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 25,
                                       fontWeight: FontWeight.bold),
                                 ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => Text(
+                            jokeController.joke.value.delivery ?? '',
+                            style: const TextStyle(
+                                fontSize: 25,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text('Category: ',
+                                style: TextStyle(color: Colors.grey)),
+                            Obx(
+                              () => Text(
+                                jokeController.joke.value.category!,
+                                style: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

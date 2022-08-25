@@ -11,9 +11,9 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 0;
-  static  List<Widget> _screens = [
+  final   List<Widget> _screens = [
     HomeScreen(),
-    Scaffold(),
+   const Scaffold(),
   ];
   @override
   Widget build(BuildContext context) {
