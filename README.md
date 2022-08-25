@@ -1,6 +1,7 @@
 # joke_app
 
-A new Flutter project.
+A flutter application which fetches a random joke from an api and displays it in the ui
+Getx state management is used for managing the state of the ui
 
 ## Getting Started
 
