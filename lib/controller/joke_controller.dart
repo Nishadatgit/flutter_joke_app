@@ -3,12 +3,8 @@ import 'package:joke_app/api/service.dart';
 import 'package:joke_app/model/joke_model.dart';
 
 class JokeController extends GetxController {
-  var joke = JokeModel(
-          category: 'None',
-          setup: 'Fetching data for you...',
-          delivery: '',
-          joke: 'Fetching data for you...')
-      .obs;
+  var joke = JokeModel().obs;
+
   var isLoading = true.obs;
 
   getJoke() async {
@@ -16,12 +12,8 @@ class JokeController extends GetxController {
         await DioService().getMethod("https://v2.jokeapi.dev/joke/any");
     isLoading.value = !isLoading.value;
 
-    joke.value = response ??
-        JokeModel(
-            category: 'None',
-            setup: 'Fetching data for you...',
-            delivery: '',
-            joke: '');
+    joke.value = response!;
+    isLoading = false.obs;
   }
 
   Future<void> refreshItems() async {

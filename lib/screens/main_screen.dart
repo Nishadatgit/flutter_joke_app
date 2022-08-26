@@ -1,48 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:joke_app/screens/category_jokes.dart';
 
-import 'package:joke_app/screens/home.dart';
+import 'package:joke_app/screens/random_jokes.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int selectedIndex = 0;
-  final   List<Widget> _screens = [
+class MainScreen extends StatelessWidget {
+  MainScreen({super.key});
+  final List<Widget> _screens = [
     HomeScreen(),
-   const Scaffold(),
+     CategoryJokes(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 6, 53, 91),
-          title: const Text('Get A Joke'),
-          centerTitle: true,
-          bottom: TabBar(
-            indicatorWeight: 3,
-            tabs: const [
-              Tab(
-                icon: Icon(Icons.shuffle),
-              ),
-              Tab(
-                icon: Icon(Icons.category),
-              )
-            ],
-            onTap: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
+          appBar: AppBar(
+            elevation: 0,
+            toolbarHeight: 60,
+            backgroundColor: const Color.fromARGB(255, 6, 53, 91),
+            title: const Text('Get A Joke'),
+            centerTitle: true,
+            bottom: TabBar(
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
+              labelStyle:const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              unselectedLabelColor: Colors.grey,
+              indicatorWeight: 3,
+              tabs: const [
+                Tab(
+                  text: 'Random',
+                ),
+                Tab(
+                  text: 'Category',
+                )
+              ],
+              onTap: (index) {},
+            ),
           ),
-        ),
-        body: _screens[selectedIndex],
-      ),
+          body: TabBarView(children: _screens)),
     );
   }
 }
