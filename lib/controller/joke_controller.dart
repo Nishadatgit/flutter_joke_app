@@ -6,10 +6,8 @@ class JokeController extends GetxController {
   var joke = JokeModel().obs;
 
   var isLoading = true.obs;
-  
 
   getJoke() async {
-   
     final response =
         await DioService().getMethod("https://v2.jokeapi.dev/joke/any");
 

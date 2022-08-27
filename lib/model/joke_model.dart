@@ -5,18 +5,17 @@
 import 'dart:convert';
 
 class JokeModel {
-  JokeModel({
-    this.error,
-    this.category,
-    this.type,
-    this.setup,
-    this.delivery,
-    this.flags,
-    this.id,
-    this.safe,
-    this.lang,
-    this.joke
-  });
+  JokeModel(
+      {this.error,
+      this.category,
+      this.type,
+      this.setup,
+      this.delivery,
+      this.flags,
+      this.id,
+      this.safe,
+      this.lang,
+      this.joke});
 
   bool? error;
   String? category;

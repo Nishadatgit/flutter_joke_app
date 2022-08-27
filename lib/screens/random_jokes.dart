@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:joke_app/controller/joke_controller.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -7,7 +8,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends GetView<JokeController> {
   HomeScreen({super.key});
-
+ 
   final JokeController jokeController = Get.put(JokeController());
   @override
   Widget build(BuildContext context) {
@@ -26,104 +27,100 @@ class HomeScreen extends GetView<JokeController> {
         },
         child: ListView(
           children: [
-            Obx(
-              () => jokeController.isLoading.value
-                  ? SizedBox(
-                      height: 500,
-                      child: Center(
-                          child: LoadingAnimationWidget.twoRotatingArc(
-                              color: const Color.fromARGB(255, 6, 53, 91),
-                              size: 100)),
-                    )
-                  : Column(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.all(20),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Obx(
-                                    () => jokeController.joke.value.joke != null
-                                        ? Text(
-                                            jokeController.joke.value.joke ??
-                                                '',
-                                            style: const TextStyle(
-                                                fontSize: 25,
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold),
-                                          )
-                                        : Text(
-                                            jokeController.joke.value.setup ??
-                                                '',
-                                            style: const TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Obx(
-                                    () => Text(
-                                      jokeController.joke.value.delivery ?? '',
-                                      style: const TextStyle(
-                                          fontSize: 25,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            const Text(
-                                              'Safe:  ',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey),
-                                            ),
-                                            Obx(
-                                              () => CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor: jokeController
-                                                        .joke.value.safe!
-                                                    ? Colors.green
-                                                    : Colors.red,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const Text('Category: ',
-                                          style: TextStyle(color: Colors.grey)),
-                                      Obx(
-                                        () => Text(
-                                          jokeController.joke.value.category!,
+            Obx(() => jokeController.isLoading.value
+                ? SizedBox(
+                    height: 500,
+                    child: Center(
+                        child: LoadingAnimationWidget.twoRotatingArc(
+                            color: const Color.fromARGB(255, 6, 53, 91),
+                            size: 100)),
+                  )
+                : Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.all(20),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Obx(
+                                  () => jokeController.joke.value.joke != null
+                                      ? Text(
+                                          jokeController.joke.value.joke ?? '',
                                           style: const TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 25,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
+                                          jokeController.joke.value.setup ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 25,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                      ),
-                                    ],
+                                ),
+                                const SizedBox(height: 10),
+                                Obx(
+                                  () => Text(
+                                    jokeController.joke.value.delivery ?? '',
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          const Text(
+                                            'Safe:  ',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey),
+                                          ),
+                                          Obx(
+                                            () => CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: jokeController
+                                                      .joke.value.safe!
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const Text('Category: ',
+                                        style: TextStyle(color: Colors.grey)),
+                                    Obx(
+                                      () => Text(
+                                        jokeController.joke.value.category!,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-            ),
+                      ),
+                    ],
+                  )),
           ],
         ),
       )),

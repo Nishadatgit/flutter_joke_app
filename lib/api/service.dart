@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:joke_app/constants/strings.dart';
 import 'package:joke_app/model/joke_model.dart';
 
 class DioService {
@@ -26,5 +27,14 @@ class DioService {
       }
       return null;
     });
+  }
+
+  Future<void> getWeather(String cityName) async {
+    Dio dioCilent = Dio();
+    final url = weatherAPiUrl + cityName;
+    final response = await dioCilent.get(url,
+        options: Options(
+            headers: {'X-Api-Key': apiKey}, responseType: ResponseType.plain));
+    print(response.data);
   }
 }

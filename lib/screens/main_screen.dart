@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:joke_app/api/service.dart';
+
 import 'package:joke_app/screens/category_jokes.dart';
 
 import 'package:joke_app/screens/random_jokes.dart';
@@ -16,6 +18,28 @@ class MainScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
           appBar: AppBar(
+            actions: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      DioService().getWeather('malappuram');
+                    },
+                    child: const Text(
+                      '27°C',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+            ],
             elevation: 0,
             toolbarHeight: 60,
             backgroundColor: const Color.fromARGB(255, 6, 53, 91),

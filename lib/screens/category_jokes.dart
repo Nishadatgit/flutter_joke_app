@@ -32,7 +32,7 @@ class CategoryJokes extends StatelessWidget {
                 jokeByTypeController
                     .refreshGetJokeByType(jokeTypeSelectorController.val.value);
               } else {
-                Get.snackbar('Warning', 'Please select a type',
+                Get.snackbar('Cannot reload', 'Please select a type',
                     colorText: Colors.white, backgroundColor: Colors.red);
               }
             },
@@ -62,14 +62,9 @@ class CategoryJokes extends StatelessWidget {
                                 () => Text(
                                   jokeTypeSelectorController.val.value != ''
                                       ? jokeTypeSelectorController.val.value
-                                          .replaceAll(',', ' ')
+                                          .replaceAll(',', '-')
                                       : 'Please Select A Joke Type',
                                   style: TextStyle(
-                                      wordSpacing: jokeTypeSelectorController
-                                                  .val.value !=
-                                              ''
-                                          ? 10
-                                          : 1,
                                       color: jokeTypeSelectorController
                                                   .val.value !=
                                               ''
