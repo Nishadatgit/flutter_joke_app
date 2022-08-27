@@ -5,6 +5,10 @@ class JokeType {
 }
 
 final List<JokeType> jokeTypes = [
-  JokeType(name: 'Programming', value: 'programming,'),
-  JokeType(name: 'Pun', value: 'pun,')
+  JokeType(name: 'Programming', value: 'Programming'),
+  JokeType(name: 'Pun', value: 'pun'),
+  JokeType(name: 'Misc', value: 'Miscellaneous'),
+  JokeType(name: 'Dark', value: 'Dark'),
+  JokeType(name: 'Spooky', value: 'Spooky'),
+  JokeType(name: 'Christmas', value: 'Christmas')
 ];

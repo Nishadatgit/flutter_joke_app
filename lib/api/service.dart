@@ -21,10 +21,7 @@ class DioService {
           return null;
         }
       } else if (response.statusCode == 404) {
-        Get.showSnackbar(const GetSnackBar(
-          title: 'Error',
-          messageText: Text('Internet Error'),
-        ));
+        print('Internet error');
         return null;
       }
       return null;

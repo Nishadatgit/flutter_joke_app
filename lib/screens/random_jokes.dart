@@ -125,10 +125,9 @@ class HomeScreen extends GetView<JokeController> {
 
   Obx _buildFloatingActionButton() {
     return Obx(() => !jokeController.isLoading.value
-        ? AnimatedContainer(
+        ? Container(
             height: 50,
             width: 50,
-            duration: const Duration(milliseconds: 400),
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.yellow,
@@ -137,13 +136,11 @@ class HomeScreen extends GetView<JokeController> {
                 onPressed: () {
                   jokeController.refreshItems();
                 },
-                icon: !jokeController.isLoading.value
-                    ? const Icon(
-                        Icons.shuffle,
-                        color: Colors.black,
-                        size: 25,
-                      )
-                    : const SizedBox.shrink()),
+                icon: const Icon(
+                  Icons.shuffle,
+                  color: Colors.black,
+                  size: 25,
+                )),
           )
         : SizedBox(
             height: 50,
