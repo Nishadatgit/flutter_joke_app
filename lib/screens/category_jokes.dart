@@ -1,5 +1,5 @@
-import 'package:bouncing_widget/bouncing_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:joke_app/controller/joke_by_type_controller.dart';
 import 'package:joke_app/controller/joke_type_selector_controller.dart';
@@ -10,9 +10,10 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class CategoryJokes extends StatelessWidget {
   CategoryJokes({super.key});
-  JokeTypeSelectorController jokeTypeSelectorController =
+  final JokeTypeSelectorController jokeTypeSelectorController =
       Get.put(JokeTypeSelectorController());
-  JokeByTypeController jokeByTypeController = Get.put(JokeByTypeController());
+  final JokeByTypeController jokeByTypeController =
+      Get.put(JokeByTypeController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,9 @@ class CategoryJokes extends StatelessWidget {
         backgroundColor: Colors.grey[100],
         body: SafeArea(
           child: LiquidPullToRefresh(
-            animSpeedFactor: 1,
+            animSpeedFactor: 2,
             height: 50,
+            showChildOpacityTransition: false,
             backgroundColor: Colors.white,
             springAnimationDurationInMilliseconds: 1000,
             color: const Color.fromARGB(255, 6, 53, 91),
@@ -31,7 +33,7 @@ class CategoryJokes extends StatelessWidget {
                     .refreshGetJokeByType(jokeTypeSelectorController.val.value);
               } else {
                 Get.snackbar('Warning', 'Please select a type',
-                    colorText: Colors.white);
+                    colorText: Colors.white, backgroundColor: Colors.red);
               }
             },
             child: ListView(
@@ -61,7 +63,7 @@ class CategoryJokes extends StatelessWidget {
                                   jokeTypeSelectorController.val.value != ''
                                       ? jokeTypeSelectorController.val.value
                                           .replaceAll(',', ' ')
-                                      : 'Please a select a type',
+                                      : 'Please Select A Joke Type',
                                   style: TextStyle(
                                       wordSpacing: jokeTypeSelectorController
                                                   .val.value !=
@@ -84,163 +86,153 @@ class CategoryJokes extends StatelessWidget {
                     )
                   ],
                 ),
-                Obx(
-                  () => jokeByTypeController.isInitState.value
-                      ? const SizedBox.shrink()
-                      : jokeByTypeController.isLoading.value
-                          ? SizedBox(
-                              height: 400,
-                              child: Center(
-                                  child: LoadingAnimationWidget.twoRotatingArc(
-                                      color:
-                                          const Color.fromARGB(255, 6, 53, 91),
-                                      size: 100)),
-                            )
-                          : Column(
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: const EdgeInsets.all(20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 20.0),
-                                    child: AnimatedContainer(
-                                      duration: const Duration(seconds: 1),
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Obx(
-                                            () => jokeByTypeController
-                                                        .jokeByType
-                                                        .value
-                                                        .joke !=
-                                                    null
-                                                ? Text(
-                                                    jokeByTypeController
-                                                            .jokeByType
-                                                            .value
-                                                            .joke ??
-                                                        '',
-                                                    style: const TextStyle(
-                                                        fontSize: 25,
-                                                        color: Colors.grey,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                : Text(
-                                                    jokeByTypeController
-                                                            .jokeByType
-                                                            .value
-                                                            .setup ??
-                                                        '',
-                                                    style: const TextStyle(
-                                                        fontSize: 25,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Obx(
-                                            () => Text(
-                                              jokeByTypeController.jokeByType
-                                                      .value.delivery ??
-                                                  '',
-                                              style: const TextStyle(
-                                                  fontSize: 25,
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    const Text(
-                                                      'Safe:  ',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.grey),
-                                                    ),
-                                                    Obx(
-                                                      () => CircleAvatar(
-                                                        radius: 10,
-                                                        backgroundColor:
-                                                            jokeByTypeController
-                                                                    .jokeByType
-                                                                    .value
-                                                                    .safe!
-                                                                ? Colors.green
-                                                                : Colors.red,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              const Text('Category: ',
-                                                  style: TextStyle(
-                                                      color: Colors.grey)),
-                                              Obx(
-                                                () => Text(
-                                                  jokeByTypeController
-                                                      .jokeByType
-                                                      .value
-                                                      .category!,
-                                                  style: const TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                )
+                _buildBody(context)
               ],
             ),
           ),
         ),
-        floatingActionButton: Obx(
-          () => jokeTypeSelectorController.val.value != ''
-              ? jokeByTypeController.isLoading.value
-                  ? SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: LoadingAnimationWidget.inkDrop(
-                          color: Colors.yellow, size: 40),
-                    )
-                  : SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.yellow,
-                        onPressed: () {
-                          jokeByTypeController.getJokeByType(
-                              jokeTypeSelectorController.val.value);
-                        },
-                        child: const Icon(
-                          Icons.replay,
-                          color: Colors.black,
+        floatingActionButton: _buildFloatingActionButton());
+  }
+
+  Obx _buildFloatingActionButton() {
+    return Obx(
+      () => jokeTypeSelectorController.val.value != ''
+          ? jokeByTypeController.isLoading.value
+              ? SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: LoadingAnimationWidget.inkDrop(
+                      color: Colors.yellow, size: 40),
+                )
+              : SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.yellow,
+                    onPressed: () {
+                      jokeByTypeController
+                          .getJokeByType(jokeTypeSelectorController.val.value);
+                    },
+                    child: const Icon(
+                      FontAwesomeIcons.arrowsRotate,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+          : const SizedBox.shrink(),
+    );
+  }
+
+  Obx _buildBody(BuildContext context) {
+    return Obx(
+      () => jokeByTypeController.isInitState.value
+          ? const SizedBox.shrink()
+          : jokeByTypeController.isLoading.value
+              ? SizedBox(
+                  height: 400,
+                  child: Center(
+                      child: LoadingAnimationWidget.twoRotatingArc(
+                          color: const Color.fromARGB(255, 6, 53, 91),
+                          size: 100)),
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: AnimatedContainer(
+                          duration: const Duration(seconds: 1),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(
+                                () => jokeByTypeController
+                                            .jokeByType.value.joke !=
+                                        null
+                                    ? Text(
+                                        jokeByTypeController
+                                                .jokeByType.value.joke ??
+                                            '',
+                                        style: const TextStyle(
+                                            fontSize: 25,
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
+                                        jokeByTypeController
+                                                .jokeByType.value.setup ??
+                                            '',
+                                        style: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                              ),
+                              const SizedBox(height: 10),
+                              Obx(
+                                () => Text(
+                                  jokeByTypeController
+                                          .jokeByType.value.delivery ??
+                                      '',
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        const Text(
+                                          'Safe:  ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                        ),
+                                        Obx(
+                                          () => CircleAvatar(
+                                            radius: 10,
+                                            backgroundColor:
+                                                jokeByTypeController
+                                                        .jokeByType.value.safe!
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const Text('Category: ',
+                                      style: TextStyle(color: Colors.grey)),
+                                  Obx(
+                                    () => Text(
+                                      jokeByTypeController
+                                          .jokeByType.value.category!,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    )
-              : const SizedBox.shrink(),
-        ));
+                    ),
+                  ],
+                ),
+    );
   }
 
   void _showTypes(BuildContext context) {
@@ -276,7 +268,7 @@ class CategoryJokes extends StatelessWidget {
               Row(
                 children: [
                   const Spacer(),
-                  ElevatedButton(
+                  ElevatedButton.icon(
                       style:
                           ElevatedButton.styleFrom(backgroundColor: Colors.red),
                       onPressed: () {
@@ -288,9 +280,13 @@ class CategoryJokes extends StatelessWidget {
                             backgroundColor:
                                 Colors.transparent.withOpacity(0.5));
                       },
-                      child: const Text('Clear')),
+                      icon: const Icon(
+                        FontAwesomeIcons.broom,
+                        size: 20,
+                      ),
+                      label: const Text('Clear')),
                   const SizedBox(width: 20),
-                  ElevatedButton(
+                  ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                           backgroundColor:
                               const Color.fromARGB(255, 6, 53, 91)),
@@ -305,7 +301,8 @@ class CategoryJokes extends StatelessWidget {
                               colorText: Colors.white);
                         }
                       },
-                      child: const Text('Save'))
+                      icon: const Icon(FontAwesomeIcons.solidFloppyDisk),
+                      label: const Text('Save'))
                 ],
               )
             ],
