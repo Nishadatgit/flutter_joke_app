@@ -69,7 +69,7 @@ class CategoryJokes extends StatelessWidget {
                                                   .val.value !=
                                               ''
                                           ? 10
-                                          : 2,
+                                          : 1,
                                       color: jokeTypeSelectorController
                                                   .val.value !=
                                               ''
