@@ -7,7 +7,7 @@ class MainScreen extends StatelessWidget {
   MainScreen({super.key});
   final List<Widget> _screens = [
     HomeScreen(),
-     CategoryJokes(),
+    CategoryJokes(),
   ];
 
   @override
@@ -20,11 +20,11 @@ class MainScreen extends StatelessWidget {
             toolbarHeight: 60,
             backgroundColor: const Color.fromARGB(255, 6, 53, 91),
             title: const Text('Get A Joke'),
-            centerTitle: true,
             bottom: TabBar(
               indicatorColor: Colors.white,
               labelColor: Colors.white,
-              labelStyle:const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              labelStyle:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               unselectedLabelColor: Colors.grey,
               indicatorWeight: 3,
               tabs: const [
