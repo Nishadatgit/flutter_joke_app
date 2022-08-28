@@ -25,7 +25,7 @@ class JokeHome extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios),
               iconSize: 20,
             ),
-            leadingWidth: 20,
+            leadingWidth: 40,
             actions: [
               Obx(
                 () => weatherController.isUpdated.value

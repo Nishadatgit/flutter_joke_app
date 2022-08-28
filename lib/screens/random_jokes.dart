@@ -1,7 +1,10 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
 import 'package:joke_app/controller/joke_controller.dart';
+import 'package:joke_app/controller/text_to_speech_controller.dart';
 import 'package:joke_app/screens/shimmer/random_jokes_shimmer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -9,8 +12,11 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends GetView<JokeController> {
   HomeScreen({super.key});
+  final FlutterTts flutterTts = FlutterTts();
 
   final JokeController jokeController = Get.put(JokeController());
+  final TextToSpeechController textToSpeechController =
+      Get.put(TextToSpeechController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +99,26 @@ class HomeScreen extends GetView<JokeController> {
                                                   ? Colors.green
                                                   : Colors.red,
                                             ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Obx(
+                                            () => AvatarGlow(
+                                              animate: textToSpeechController
+                                                  .isPlaying.value,
+                                              endRadius: 30,
+                                              repeat: false,
+                                              repeatPauseDuration:
+                                                  const Duration(
+                                                      milliseconds: 100),
+                                              duration: const Duration(
+                                                  milliseconds: 2000),
+                                              glowColor: Colors.black,
+                                              child: IconButton(
+                                                  onPressed: () async {
+                                                    playJoke();
+                                                  },
+                                                  icon: const Icon(Icons.mic)),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -147,5 +173,17 @@ class HomeScreen extends GetView<JokeController> {
             width: 50,
             child: LoadingAnimationWidget.inkDrop(
                 color: Colors.yellow, size: 40)));
+  }
+
+  void playJoke() async {
+    if (jokeController.joke.value.joke == null) {
+      final setup = jokeController.joke.value.setup!;
+
+      final delivery = jokeController.joke.value.delivery!;
+      await textToSpeechController.playAudio('$setup    $delivery');
+    } else {
+      final text = jokeController.joke.value.joke;
+      textToSpeechController.playAudio(text!);
+    }
   }
 }
