@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:joke_app/controller/joke_controller.dart';
+import 'package:joke_app/screens/shimmer/random_jokes_shimmer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends GetView<JokeController> {
   HomeScreen({super.key});
- 
+
   final JokeController jokeController = Get.put(JokeController());
   @override
   Widget build(BuildContext context) {
@@ -28,13 +29,7 @@ class HomeScreen extends GetView<JokeController> {
         child: ListView(
           children: [
             Obx(() => jokeController.isLoading.value
-                ? SizedBox(
-                    height: 500,
-                    child: Center(
-                        child: LoadingAnimationWidget.twoRotatingArc(
-                            color: const Color.fromARGB(255, 6, 53, 91),
-                            size: 100)),
-                  )
+                ? const RandomJokesShimmer()
                 : Column(
                     children: [
                       Container(

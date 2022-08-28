@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:joke_app/controller/joke_by_type_controller.dart';
 import 'package:joke_app/controller/joke_type_selector_controller.dart';
 import 'package:joke_app/model/joke_type_model.dart';
+import 'package:joke_app/screens/shimmer/random_jokes_shimmer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -124,12 +125,8 @@ class CategoryJokes extends StatelessWidget {
       () => jokeByTypeController.isInitState.value
           ? const SizedBox.shrink()
           : jokeByTypeController.isLoading.value
-              ? SizedBox(
-                  height: 400,
-                  child: Center(
-                      child: LoadingAnimationWidget.twoRotatingArc(
-                          color: const Color.fromARGB(255, 6, 53, 91),
-                          size: 100)),
+              ? const RandomJokesShimmer(
+                  isCategory: true,
                 )
               : Column(
                   children: [
