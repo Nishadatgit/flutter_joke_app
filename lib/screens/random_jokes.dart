@@ -1,22 +1,20 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 
 import 'package:joke_app/controller/joke_controller.dart';
 import 'package:joke_app/controller/text_to_speech_controller.dart';
-import 'package:joke_app/screens/shimmer/random_jokes_shimmer.dart';
+import 'package:joke_app/widgets/shimmer/random_jokes_shimmer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HomeScreen extends GetView<JokeController> {
   HomeScreen({super.key});
-  final FlutterTts flutterTts = FlutterTts();
 
-  final JokeController jokeController = Get.put(JokeController());
+  final JokeController jokeController = Get.find<JokeController>();
   final TextToSpeechController textToSpeechController =
-      Get.put(TextToSpeechController());
+      Get.find<TextToSpeechController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +28,8 @@ class HomeScreen extends GetView<JokeController> {
         springAnimationDurationInMilliseconds: 1000,
         color: const Color.fromARGB(255, 6, 53, 91),
         onRefresh: () async {
+          textToSpeechController.flutterTts.stop();
+          textToSpeechController.isPlaying.value = false;
           jokeController.refreshItems();
         },
         child: ListView(
@@ -103,23 +103,57 @@ class HomeScreen extends GetView<JokeController> {
                                           const SizedBox(width: 10),
                                           Obx(
                                             () => AvatarGlow(
+                                              endRadius: 30,
                                               animate: textToSpeechController
                                                   .isPlaying.value,
-                                              endRadius: 30,
-                                              repeat: false,
+                                              repeat: true,
+                                              duration: const Duration(
+                                                  milliseconds: 2000),
                                               repeatPauseDuration:
                                                   const Duration(
                                                       milliseconds: 100),
-                                              duration: const Duration(
-                                                  milliseconds: 2000),
                                               glowColor: Colors.black,
-                                              child: IconButton(
-                                                  onPressed: () async {
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (textToSpeechController
+                                                          .isPlaying.value ==
+                                                      true) {
+                                                    textToSpeechController
+                                                        .flutterTts
+                                                        .stop();
+                                                    textToSpeechController
+                                                        .isPlaying
+                                                        .value = false;
+                                                  } else {
                                                     playJoke();
-                                                  },
-                                                  icon: const Icon(Icons.mic)),
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  6,
+                                                                  53,
+                                                                  91),
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: textToSpeechController
+                                                          .isPlaying.value
+                                                      ? const Icon(
+                                                          Icons.mic_off,
+                                                          size: 16,
+                                                          color: Colors.white)
+                                                      : const Icon(Icons.mic,
+                                                          size: 16,
+                                                          color: Colors.white),
+                                                ),
+                                              ),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -161,6 +195,8 @@ class HomeScreen extends GetView<JokeController> {
             child: IconButton(
                 onPressed: () {
                   jokeController.refreshItems();
+                  textToSpeechController.flutterTts.stop();
+                  textToSpeechController.isPlaying.value = false;
                 },
                 icon: const Icon(
                   Icons.shuffle,
@@ -180,7 +216,7 @@ class HomeScreen extends GetView<JokeController> {
       final setup = jokeController.joke.value.setup!;
 
       final delivery = jokeController.joke.value.delivery!;
-      await textToSpeechController.playAudio('$setup    $delivery');
+      await textToSpeechController.playAudio('$setup .. $delivery');
     } else {
       final text = jokeController.joke.value.joke;
       textToSpeechController.playAudio(text!);

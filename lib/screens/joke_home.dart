@@ -13,7 +13,7 @@ class JokeHome extends StatelessWidget {
     HomeScreen(),
     CategoryJokes(),
   ];
-  final WeatherController weatherController = Get.put(WeatherController());
+  final WeatherController weatherController = Get.find<WeatherController>();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

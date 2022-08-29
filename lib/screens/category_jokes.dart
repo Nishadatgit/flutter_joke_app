@@ -1,10 +1,12 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:joke_app/controller/joke_by_type_controller.dart';
 import 'package:joke_app/controller/joke_type_selector_controller.dart';
+import 'package:joke_app/controller/text_to_speech_controller.dart';
 import 'package:joke_app/model/joke_type_model.dart';
-import 'package:joke_app/screens/shimmer/random_jokes_shimmer.dart';
+import 'package:joke_app/widgets/shimmer/random_jokes_shimmer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
@@ -12,9 +14,10 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 class CategoryJokes extends StatelessWidget {
   CategoryJokes({super.key});
   final JokeTypeSelectorController jokeTypeSelectorController =
-      Get.put(JokeTypeSelectorController());
+      Get.find<JokeTypeSelectorController>();
   final JokeByTypeController jokeByTypeController =
-      Get.put(JokeByTypeController());
+      Get.find<JokeByTypeController>();
+  final _textSpeechController = Get.find<TextToSpeechController>();
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +203,60 @@ class CategoryJokes extends StatelessWidget {
                                                     ? Colors.green
                                                     : Colors.red,
                                           ),
-                                        )
+                                        ),
+                                         Obx(
+                                            () => AvatarGlow(
+                                              endRadius: 30,
+                                              animate: _textSpeechController
+                                                  .isPlaying.value,
+                                              repeat: true,
+                                              duration: const Duration(
+                                                  milliseconds: 2000),
+                                              repeatPauseDuration:
+                                                  const Duration(
+                                                      milliseconds: 100),
+                                              glowColor: Colors.black,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  if (_textSpeechController
+                                                          .isPlaying.value ==
+                                                      true) {
+                                                    _textSpeechController
+                                                        .flutterTts
+                                                        .stop();
+                                                    _textSpeechController
+                                                        .isPlaying
+                                                        .value = false;
+                                                  } else {
+                                                    playJoke();
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  6,
+                                                                  53,
+                                                                  91),
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: _textSpeechController
+                                                          .isPlaying.value
+                                                      ? const Icon(
+                                                          Icons.mic_off,
+                                                          size: 16,
+                                                          color: Colors.white)
+                                                      : const Icon(Icons.mic,
+                                                          size: 16,
+                                                          color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -225,6 +281,17 @@ class CategoryJokes extends StatelessWidget {
                   ],
                 ),
     );
+  }
+  void playJoke() async {
+    if (jokeByTypeController.jokeByType.value.joke == null) {
+      final setup = jokeByTypeController.jokeByType.value.setup!;
+
+      final delivery = jokeByTypeController.jokeByType.value.delivery!;
+      await _textSpeechController.playAudio('$setup .. $delivery');
+    } else {
+      final text = jokeByTypeController.jokeByType.value.joke;
+      _textSpeechController.playAudio(text!);
+    }
   }
 
   void _showTypes(BuildContext context) {
